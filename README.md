@@ -1,4 +1,10 @@
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Python-version:](https://img.shields.io/badge/python-v3.8-green)]() | [Usage](#usage) | [Dependencies](#dependencies) | [Installation](#installation) | [References](#references)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Python-version:](https://img.shields.io/badge/python-v3.8-green)]() | [Dependencies](#dependencies) | [Installation](#installation)
+
+
+# Disclaimer
+ this repository is a standalone for the pdb utility of dnaFit
+ please report issues at: https://github.com/elija-feigl/dnaFit
+
 
 # pdb2cif
 
@@ -10,6 +16,7 @@ Supported Sources:
   * mrdna
   * tacoxDNA
   * SNUPI
+
 
 ## Dependencies
 
