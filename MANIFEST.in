@@ -1,0 +1,4 @@
+include pdb2cif/README.md
+include pdb2cif/LICENSE
+include pdb2cif/VERSION
+recursive-include pdb2cif/resources *
