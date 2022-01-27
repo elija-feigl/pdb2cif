@@ -11,6 +11,6 @@ setup(
     include_package_data=True,
     entry_points="""
         [console_scripts]
-        pdb2cif=pdb2cif.scripts.pdb2cif:cli
+        pdb2cif=pdb2cif.scripts.pdb2cif:pdb2cif
     """,
 )

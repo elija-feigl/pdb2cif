@@ -21,15 +21,7 @@ def print_version(ctx, _, value):
     ctx.exit()
 
 
-@click.group()
-@click.option("--version", is_flag=True, callback=print_version, expose_value=False, is_eager=True)
-def cli():
-    """
-    PDB file to mmCIF file conversion
-    """
-
-
-@cli.command()
+@click.command()
 @click.argument("pdb", type=click.Path(exists=True, resolve_path=True, path_type=Path))
 @click.option("--remove-H", "remove_h", is_flag=True, help="remove hydrogen atoms")
 @click.option("--snupi", "is_snupi", is_flag=True, help="convert from SNUPI pdb")
