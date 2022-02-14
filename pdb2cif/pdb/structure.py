@@ -3,6 +3,7 @@
 # Full GPL-3 License can be found in `LICENSE` at the project root.
 from dataclasses import dataclass
 from dataclasses import field
+import logging
 from pathlib import Path
 from typing import List
 from typing import Tuple
@@ -23,6 +24,7 @@ class Structure:
     # TODO-IMPROVEMENT: defaults and other attributes: sequences etc
 
     def __post_init__(self):
+        self.logger = logging.getLogger(__name__)
         self.name = self.path.stem  # TODO-IMPROVEMENT pass name option
         self.keep_resID: bool = True
         self.previous_atm: Tuple[str, int] = ("", 0)
@@ -116,6 +118,7 @@ class Structure:
         raise NotImplementedError
 
     def parse_pdb(self) -> None:
+        self.logger.info("Parsing pdb file: %s", self.path)
         with self.path.open(mode="r") as fi:
             for line in fi.readlines():
                 lineType = line[0:6].strip()
@@ -134,4 +137,5 @@ class Structure:
     def write_cif(self, outfile: Path) -> None:
         # generate sequences here (from atom)
         cif = CIF(struct=self)
+        self.logger.info("Writing new mmCif file: %s", outfile)
         cif.write(outfile=outfile)

@@ -4,6 +4,7 @@
 """ PDB file to mmCIF file conversion script module:"""
 import logging
 from pathlib import Path
+import sys
 from typing import List
 
 import click
@@ -46,6 +47,7 @@ def pdb2cif(pdb, remove_h, is_snupi, flip_fields):
     \b
     PDB is the name of the namd configuration file [.pdb]
     """
+    logger.info("pdb2cif version: %s", get_version())
     _check_path(pdb, [".pdb"])
     structure = Structure(path=pdb, remove_H=remove_h, is_snupi=is_snupi, flip_fields=flip_fields)
     structure.parse_pdb()
@@ -56,4 +58,5 @@ def pdb2cif(pdb, remove_h, is_snupi, flip_fields):
 
 def _check_path(filepath: Path, extensions: List[str]):
     if filepath.suffix not in extensions:
-        raise Exception(f"input file {filepath} does not have correct extension {extensions}")
+        logger.critical("Input file %s does not have correct extension %s.", filepath, extensions)
+        sys.exit(1)
