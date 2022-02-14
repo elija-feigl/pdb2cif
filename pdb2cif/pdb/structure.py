@@ -20,10 +20,10 @@ class Structure:
     flip_fields: bool = False
 
     atoms: List[Atom] = field(default_factory=list)
-    # TODO: default and other attributes: sequences etc
+    # TODO-IMPROVEMENT: defaults and other attributes: sequences etc
 
     def __post_init__(self):
-        self.name = self.path.stem  # TODO pass name option
+        self.name = self.path.stem  # TODO-IMPROVEMENT pass name option
         self.keep_resID: bool = True
         self.previous_atm: Tuple[str, int] = ("", 0)
         self.previous_res: Tuple[str, int] = ("", 0)
@@ -43,8 +43,8 @@ class Structure:
         self._parse_cif_atom()
         raise NotImplementedError
 
-    def _parse_pdb_info(self, line: str):
-        # TODO-low: collect extra data
+    def _parse_pdb_info(self, _: str):
+        # TODO-IMPROVEMENT: collect extra data
         return
 
     def _eval_atm_number(
@@ -124,7 +124,7 @@ class Structure:
                 else:
                     self._parse_pdb_info(line)
 
-        # TODO: generate implicit data: sequences
+        # TODO-IMPROVEMENT: generate implicit data: sequences
         # self._parse_pdb_generate_info()
 
     def write_pdb(self, outfile: Path) -> None:

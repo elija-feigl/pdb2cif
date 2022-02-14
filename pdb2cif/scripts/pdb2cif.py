@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import List
 
 import click
-from pdb2cif import __version__
+from pdb2cif import get_version
 from pdb2cif.pdb.structure import Structure
 
 logger = logging.getLogger(__name__)
@@ -17,29 +17,39 @@ def print_version(ctx, _, value):
     """click print version."""
     if not value or ctx.resilient_parsing:
         return
-    click.echo(__version__)
+    click.echo(get_version())
     ctx.exit()
 
 
-@click.command()
+@click.command(context_settings=dict(help_option_names=["-h", "--help"]))
 @click.argument("pdb", type=click.Path(exists=True, resolve_path=True, path_type=Path))
-@click.option("--remove-H", "remove_h", is_flag=True, help="remove hydrogen atoms")
-@click.option("--snupi", "is_snupi", is_flag=True, help="convert from SNUPI pdb")
+@click.option(
+    "-v",
+    "--version",
+    is_flag=True,
+    help="Show __version__ and exit.",
+    callback=print_version,
+    expose_value=False,
+    is_eager=True,
+)
+@click.option("--remove-H", "remove_h", is_flag=True, help="Remove hydrogen atoms.")
+@click.option("--snupi", "is_snupi", is_flag=True, help="Convert from SNUPI pdb.")
 @click.option(
     "--flip-fields",
     "flip_fields",
     is_flag=True,
-    help="flip the values of occupancy and temperature",
+    help="Flip the values of occupancy and temperature fields.",
 )
 def pdb2cif(pdb, remove_h, is_snupi, flip_fields):
-    """convert atomic model in mmCIF format from namd PDB
-
-    PDB is the name of the namd configuration file [.pdb]\n
+    """\b
+    Generate atomic model in mmCIF format from namd PDB.
+    \b
+    PDB is the name of the namd configuration file [.pdb]
     """
     _check_path(pdb, [".pdb"])
     structure = Structure(path=pdb, remove_H=remove_h, is_snupi=is_snupi, flip_fields=flip_fields)
     structure.parse_pdb()
-    # TODO-low: ask for additional info (name, author, etc)
+    # TODO-IMPROVEMENT: ask for additional info (name, author, etc)
     output_name = pdb.with_suffix(".cif")
     structure.write_cif(output_name)
 

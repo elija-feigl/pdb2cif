@@ -1,4 +1,7 @@
-include pdb2cif/README.md
-include pdb2cif/LICENSE
-include pdb2cif/VERSION
+include README.md
+include CONTRIBUTIONS.md
+include LICENSE
+include setup.cfg
+include pyproject.toml
+include MANIFEST.in
 recursive-include pdb2cif/resources *
