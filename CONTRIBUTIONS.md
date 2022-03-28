@@ -17,6 +17,6 @@ pdb2cif Python Package is a standalone based on code from the following sources:
 Copyright (c) 2020, Dietzlab (TUM)"
 
 SOURCE CODE: dnaFit/pdb/*
-DESCRIPTION: cascading mrDNA-driven flexibel fitting
+DESCRIPTION: cascading mrDNA-driven flexible fitting
 LICENSE: GPL-3.0
 WEBSITE: https://github.com/elija-feigl/DNA_Fit
