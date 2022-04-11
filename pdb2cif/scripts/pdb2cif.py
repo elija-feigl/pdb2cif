@@ -34,6 +34,7 @@ def print_version(ctx, _, value):
     is_eager=True,
 )
 @click.option("--remove-H", "remove_h", is_flag=True, help="Remove hydrogen atoms.")
+@click.option("--alt-chain", "alt_chain_id", is_flag=True, help="Use alternative chain identifier.")
 @click.option("--snupi", "is_snupi", is_flag=True, help="Convert from SNUPI pdb.")
 @click.option(
     "--flip-fields",
@@ -41,7 +42,7 @@ def print_version(ctx, _, value):
     is_flag=True,
     help="Flip the values of occupancy and temperature fields.",
 )
-def pdb2cif(pdb, remove_h, is_snupi, flip_fields):
+def pdb2cif(pdb, remove_h, is_snupi, flip_fields, alt_chain_id):
     """\b
     Generate atomic model in mmCIF format from namd PDB.
     \b
@@ -49,7 +50,7 @@ def pdb2cif(pdb, remove_h, is_snupi, flip_fields):
     """
     logger.info("pdb2cif version: %s", get_version())
     _check_path(pdb, [".pdb"])
-    structure = Structure(path=pdb, remove_H=remove_h, is_snupi=is_snupi, flip_fields=flip_fields)
+    structure = Structure(path=pdb, remove_H=remove_h, is_snupi=is_snupi, flip_fields=flip_fields, alt_chain_id=alt_chain_id)
     structure.parse_pdb()
     # TODO-IMPROVEMENT: ask for additional info (name, author, etc)
     output_name = pdb.with_suffix(".cif")

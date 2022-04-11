@@ -18,6 +18,7 @@ class Structure:
     path: Path
     remove_H: bool = True
     is_snupi: bool = False
+    alt_chain_id: bool = False
     flip_fields: bool = False
 
     atoms: List[Atom] = field(default_factory=list)
@@ -93,12 +94,14 @@ class Structure:
             return
         atm_number = self._eval_atm_number(line[6:11])
         res_number = self._eval_res_number(line[22:28])
-        chain_id = self._eval_chain_id(line[20:22])
 
-        oppacity = line[54:60].strip()
+        str_chain_id = line[72:78] if self.alt_chain_id else line[20:22]
+        chain_id = self._eval_chain_id(str_chain_id.strip())
+
+        opacity = line[54:60].strip()
         temperature = line[60:66].strip()
         if self.flip_fields:
-            oppacity, temperature = temperature, oppacity
+            opacity, temperature = temperature, opacity
 
         self.add_atom(
             Atom(
@@ -108,7 +111,7 @@ class Structure:
                 i_res_name=line[17:20],
                 i_chain_id=chain_id,
                 i_res_number=res_number,
-                i_opacity=oppacity,
+                i_opacity=opacity,
                 i_temperature=temperature,
             )
         )
