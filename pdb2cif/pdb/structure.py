@@ -127,7 +127,7 @@ class Structure:
             _alt_shift, i_atom_coor = _parse_alt_shift(line)
 
         try:
-            _test_validity(i_atom_coor, line)
+            _ = [float(c) for c in i_atom_coor]
         except ValueError:
             raise ValueError(f"Error parsing atom coordinates: {i_atom_coor}")
 
