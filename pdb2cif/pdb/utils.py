@@ -8,7 +8,7 @@ from typing import Dict
 
 
 def int_2_cifSegID(number: int) -> str:
-    upper = string.ascii_uppercase
+    upper = string.ascii_uppercase + string.ascii_lowercase
     n_upper = len(upper)
     if number < n_upper:
         return upper[number]
@@ -48,7 +48,7 @@ def h36_2_int(inp_string: str) -> Any:
     width = len(inp_string)
     n_baseDigits = 10 * 36 ** (width - 1)
     n_baseChar = 26 * 36 ** (width - 1)
-    max_int = 10 ** width
+    max_int = 10**width
 
     if inp_string.isdigit():
         return int(inp_string)
@@ -81,7 +81,7 @@ def int_2_h36(number: int, width: int) -> str:
     """integer to hybrid36 string with "width" digits"""
     n_baseDigits = 10 * 36 ** (width - 1)
     n_baseChar = 26 * 36 ** (width - 1)
-    max_int = 10 ** width
+    max_int = 10**width
 
     if number < max_int:
         return "{:{width}d}".format(number, width=width)

@@ -89,23 +89,59 @@ class Structure:
         return chain_id
 
     def _parse_pdb_atom(self, line: str) -> None:
+
+        def _test_validity(i_atom_coor: List[str], line: str) -> None:
+            _ = [float(c) for c in i_atom_coor]
+            _ = float(line[54:59].strip())
+            _ = float(line[59:66].strip())
+
+        def _parse_alt_shift(line: str) -> Tuple[int, int]:
+            coords = line[30 : 54 + 6]
+            i_atom_coor = []
+            coor, n_decimal = "", 0
+            max_char = 0
+            for max_char, char in enumerate(coords):
+                if char in ["-", " "] and coor != "" or n_decimal == 3:
+                    i_atom_coor.append(coor)
+                    coor, n_decimal = "", 0
+                if char.isdigit() or char in ["-", "."]:
+                    coor += char
+                    if "." in coor and char.isdigit():
+                        n_decimal += 1
+                if len(i_atom_coor) == 3:
+                    _alt_shift = max_char - 22
+                    return _alt_shift, i_atom_coor
+            return 0, i_atom_coor
+
         atom_name = line[12:16]
         if "H" in atom_name and self.remove_H:
             return
         atm_number = self._eval_atm_number(line[6:11])
         res_number = self._eval_res_number(line[22:28])
 
-        str_chain_id = line[72:78] if self.alt_chain_id else line[20:22]
+        i_atom_coor = [line[30:38], line[38:46], line[46:54]]
+        _alt_shift = 0
+        try:
+            _test_validity(i_atom_coor, line)
+        except ValueError:
+            _alt_shift, i_atom_coor = _parse_alt_shift(line)
+
+        try:
+            _test_validity(i_atom_coor, line)
+        except ValueError:
+            raise ValueError(f"Error parsing atom coordinates: {i_atom_coor}")
+
+        opacity = line[54 + _alt_shift : 59 + _alt_shift].strip()
+        temperature = line[59 + _alt_shift : 66 + _alt_shift].strip()
+        str_chain_id = line[72 + _alt_shift : 78 + _alt_shift] if self.alt_chain_id else line[20:22]
         chain_id = self._eval_chain_id(str_chain_id.strip())
 
-        opacity = line[54:60].strip()
-        temperature = line[60:66].strip()
         if self.flip_fields:
             opacity, temperature = temperature, opacity
 
         self.add_atom(
             Atom(
-                i_atom_coor=[line[30:38], line[38:46], line[46:54]],
+                i_atom_coor=i_atom_coor,
                 i_atom_number=atm_number,
                 i_atom_name=atom_name,
                 i_res_name=line[17:20],
